@@ -25,7 +25,7 @@ int main(void){
 
     //exibindo a lista
 
-    for(int i=0; i<lista.size(); i++){
+    for(size_t i=0; i<lista.size(); i++){
         cout << lista[i] << " ";
     }
 
@@ -52,7 +52,7 @@ int main(void){
 
     cout << "\n";
 
-    for(int i=0; i<lista.size(); i++){
+    for(size_t i=0; i<lista.size(); i++){
         cout << lista[i] << " ";
     }
 
@@ -64,7 +64,7 @@ int main(void){
 
     cout << "\n";
 
-    for(int i=0; i<lista.size(); i++){
+    for(size_t i=0; i<lista.size(); i++){
         cout << lista[i] << " ";
     }
 
