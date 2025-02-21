@@ -1,96 +1,158 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
-class ListaSequencial {
+class ListaSeq{
+
 private:
-    vector<int> lista;
-    int capacidade;
+    int* dados;
+    int tamAtual;
+    int tamMax;
 
 public:
-    ListaSequencial(int cap){
-        capacidade = cap;
-        lista.reserve(capacidade);
+
+    ListaSeq(){
+        tamMax = 100;
+        tamAtual = 0;
+        dados = new int[tamMax];
     }
 
-    bool vazia(){ // verifica se a lista está vazia.
-        return lista.size() == 0;
+    bool vazia(){
+        return tamAtual == 0;
     }
 
-    bool cheia(){ // verifica se a lista está cheia.
-        return lista.size() == capacidade;
+    bool cheia(){
+        return tamAtual == tamMax;
     }
 
     int tamanho(){
-        return lista.size();
+        return tamAtual;
     }
 
-    int obter(int pos){
-        if(pos < 1 || pos > lista.size()){
-            cout << "Posicao invalida." << endl;
+    int elemento(int pos){
+        if(pos <= 0 || pos > tamAtual){
             return -1;
         }
-        return lista[pos - 1];
+
+        return dados[pos - 1];
     }
 
-    void modificar(int pos, int valor){
-        if (pos  < 1 || pos > lista.size()){
-            cout << "Posicao invalida!" << endl;
-            return;
+    int posicao(int dado){
+        for(int i = 0; i < tamAtual; i++){
+            if(dados[i] == dado){
+                return i + 1;
+            }
         }
-        lista[pos - 1] = valor;
+
+        return -1;
     }
 
-    void inserir(int pos, int valor){
-        if(pos < 1 || pos > lista.size() + 1){
-            cout << "Posicao invalida." << endl;
-            return;
+    bool insere(int pos, int dado){
+        if(cheia() || pos <= 0 || pos > tamAtual + 1){
+            return false;
         }
-        if(cheia()){
-            cout << "Lista cheia!" << endl;
-            return;
+
+        for(int i = tamAtual; i >= pos; i--){
+            dados[i] = dados[i - 1];
         }
-        lista.insert(lista.begin() + pos - 1, valor);
+
+        dados[pos - 1] = dado;
+        tamAtual++;
+        return true;
     }
 
-    void retirar(int pos){
-        if(pos < 1 || pos > lista.size()){
-            cout << "Posicao invalida." << endl;
-            return;
+    int remove(int pos){
+        if(pos <= 0 || pos > tamAtual){
+            return -1;
         }
-        lista.erase(lista.begin() + pos - 1);
+
+        int dado = dados[pos - 1];
+        for(int i = pos - 1; i < tamAtual - 1; i++){
+            dados[i] = dados[i  + 1];
+        }
+
+        tamAtual--;
+        return dado;
     }
 
-    void exibir(){
-        for(int i=0; i<lista.size(); i++){
-            cout << lista[i] << " ";
+    void mostrarTudo(){
+        if(vazia()){
+            cout << "A lista esta vazia." << endl;
+            return;
         }
+
+        cout << "Elemento na lista: ";
+        for(int i = 0; i < tamAtual; i++){
+            cout << dados[i] << " ";
+        }
+
         cout << endl;
+    }
+
+    ~ListaSeq(){
+        delete[] dados;
     }
 };
 
 int main(void){
-    ListaSequencial lista(5); // lista com capacidade máxima de 5 elementos
+    ListaSeq lista;
 
-    lista.inserir(1, 4);
-    lista.inserir(2, 13);
-    lista.inserir(3, 17);
-    lista.inserir(4, 22);
+    cout << "----- LISTA SEQUENCIAL -----" << endl;
 
-    cout << "LISTA SEQUENCIAL:" << endl;
-    lista.exibir();
+    cout << "\n";
 
-    lista.modificar(2, 15);
-    cout << "\nLISTA SEQUENCIAL APOS MODIFICACAO: " << endl;
-    lista.exibir();
+    /*
 
-    lista.retirar(3);
-    cout << "\nLISTA SEQUENCIAL APOS REMOVER UM ELEMENTO:" << endl;
-    lista.exibir();
+    if(lista.vazia()){
+        cout << "A lista esta vazia." << endl;
+    }else{
+        cout << "A lista nao esta vazia." << endl;
+    }
 
-    cout << "\nElemento na posicao 2: " << lista.obter(2) << endl;
+    cout << "\n";
+    if(lista.cheia()){
+        cout << "A lista esta cheia." << endl;
+    }else{
+        cout << "A lista nao esta cheia." << endl;
+    }
 
-    cout << "\nTamanho da lista: " << lista.tamanho() << endl;
+    */
+
+    lista.mostrarTudo();
+
+    cout << "\n";
+
+    lista.insere(1, 10);
+    lista.insere(2, 13);
+    lista.insere(3, 17);
+    lista.insere(4, 22);
+    lista.insere(5, 24);
+
+    cout << "\n";
+
+    lista.mostrarTudo();
+
+    cout << "\n";
+
+    cout << "Tamanho da lista: " << lista.tamanho() << endl;
+
+    cout << "\n";
+
+    cout << "Elemento na posicao 2: " << lista.elemento(2) << endl;
+
+    cout << "\n";
+
+    cout << "Posicao do dado 17: " << lista.posicao(17) << endl;
+
+    lista.remove(2);
+
+    cout << "\n";
+    cout << "Tamanho da lista apos remocao: " << lista.tamanho() << endl;
+
+    cout << "\n";
+    cout << "Elemento na posicao 2 apos remocao: " << lista.elemento(2);
+
+    cout << "\n";
+
     return 0;
 }
